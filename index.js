@@ -10,4 +10,8 @@ request('https://www.npmjs.com/package/request', function (error, response, body
   }
 });
 
+app.get('/', function (req, res) {
+    res.send("JSON.parse(data)");
+});
+
 app.listen(3001);
