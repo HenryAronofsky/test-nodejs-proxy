@@ -1,17 +1,16 @@
+var path = require('path');
+const request = require('request');
 var express = require('express');
 var app = express();
 var fs = require("fs");
-var path = require('path');
-const request = require('request');
-
-request('https://www.npmjs.com/package/request', function (error, response, body) {
-  if (!error && response.statusCode == 200) {
-    console.log(body);
-  }
-});
 
 app.get('/', function (req, res) {
-    res.send("JSON.parse(data)");
-});
+  request('https://api.opensea.io/user/0x4f0e1AfCEfd307ef0f306959c970Fe96839349Bc?format=json', function (error, response, body) {
+    if (!error && response.statusCode == 200) {
+      console.log( body );
+      res.end( body );
+    }
+  });
+})
 
-app.listen(3001);
+app.listen(8081)
