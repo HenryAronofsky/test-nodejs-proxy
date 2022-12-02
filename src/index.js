@@ -1,3 +1,4 @@
+'use strict';
 const request = require('request');
 const bodyParser = require('body-parser');
 const express = require("express");
@@ -32,5 +33,4 @@ router.get('/:account', function (req, res, next) {
 
 app.use(`/.netlify/functions/api`, router);
 
-module.exports = app;
 module.exports.handler = serverless(app);
