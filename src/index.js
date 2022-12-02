@@ -1,11 +1,15 @@
-var express = require('express'),
-    request = require('request'),
-    bodyParser = require('body-parser'),
-    app = express();
+const request = require('request');
+const bodyParser = require('body-parser');
+const express = require("express");
+const serverless = require("serverless-http");
+
+const app = express();
+const router = express.Router();
+
 var myLimit = typeof(process.argv[2]) != 'undefined' ? process.argv[2] : '100kb';
 app.use(bodyParser.json({limit: myLimit}));
 
-app.all('/:account', function (req, res, next) {
+router.get('/:account', function (req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Methods", "GET, PUT, PATCH, POST, DELETE");
     res.header("Access-Control-Allow-Headers", req.header('access-control-request-headers'));
@@ -26,4 +30,7 @@ app.all('/:account', function (req, res, next) {
     }
 });
 
-app.listen(3000);
+app.use(`/.netlify/functions/api`, router);
+
+module.exports = app;
+module.exports.handler = serverless(app);
