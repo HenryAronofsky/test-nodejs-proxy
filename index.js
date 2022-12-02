@@ -31,6 +31,4 @@ router.get('/:account', function (req, res, next) {
     }
 });
 
-app.use('/.netlify/functions/_app', router);
-
-module.exports.handler = serverless(app);
+module.exports = app;
