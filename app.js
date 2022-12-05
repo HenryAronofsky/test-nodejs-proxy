@@ -26,14 +26,10 @@ app.all('/:account', function (req, res, next) {
                         if (error) {
                             console.error(error)
                         }
-                        if (body == "{\"success\":false}") {
-                            res.send("undefined")
-                        } else {
                             res.send(body)
-                        }
                     }
             );
     }
 });
-app.listen(8080)
-// module.exports = app;
+
+module.exports = app;
