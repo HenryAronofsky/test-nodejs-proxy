@@ -16,19 +16,24 @@ app.all('/:account', function (req, res, next) {
     res.header("Access-Control-Allow-Headers", req.header('access-control-request-headers'));
 
     if (req.method === 'OPTIONS') {
-        // CORS Preflight
         res.send();
     } else {
-        request({
-                url: `https://api.opensea.io/user/${req.params.account}?format=json`, 
-                headers: {'Authorization': req.header('Authorization')}
-            },
-            function (error, response, body) {
-                if (error) {
-                    console.error(error)
-                }
-            }).pipe(res);
+            request({
+                        url: `https://api.opensea.io/user/${req.params.account}?format=json`,
+                        headers: {'Authorization': req.header('Authorization')}
+                    },
+                    function (error, response, body) {
+                        if (error) {
+                            console.error(error)
+                        }
+                        if (body == "{\"success\":false}") {
+                            res.send("undefined")
+                        } else {
+                            res.send(body)
+                        }
+                    }
+            );
     }
 });
-
-module.exports = app;
+app.listen(8080)
+// module.exports = app;
