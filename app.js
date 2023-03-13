@@ -9,7 +9,12 @@ const router = express.Router();
 
 var myLimit = typeof(process.argv[2]) != 'undefined' ? process.argv[2] : '100kb';
 app.use(bodyParser.json({limit: myLimit}));
-
+var serverData = {
+    "hexagonData": [[], [], [], [], []],
+    "nucleusData": [],
+    "planetData": [],
+    "barData": [],
+};
 app.all('/:account', function (req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Methods", "GET, PUT, PATCH, POST, DELETE");
@@ -18,17 +23,15 @@ app.all('/:account', function (req, res, next) {
     if (req.method === 'OPTIONS') {
         res.send();
     } else {
-            request({
-                        url: `https://api.opensea.io/user/${req.params.account}?format=json`,
-                        headers: {'Authorization': req.header('Authorization')}
-                    },
-                    function (error, response, body) {
-                        if (error) {
-                            console.error(error)
-                        }
-                            res.send(body)
-                    }
-            );
+        for (let i = 0; i < serverData["hexagonData"].length; i++) {
+          serverData["hexagonData"][i] = Array.from({length: 100},
+            () => Math.random());
+        }
+        serverData["nucleusData"] = Array.from({length: 100}, () => Math.random());
+        serverData["planetData"] = Array.from({length: 4}, () => Math.random());
+        serverData["barData"] = Array.from({length: 1}, () => Math.random());
+
+        res.send(serverData);
     }
 });
 
